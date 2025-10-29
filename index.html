@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THIRAIMINI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+:root {
+    --primary: #FF6F61; /* Coral */
+    --secondary: #FF8A80; /* Light coral */
+    --dark: #C63D2A; /* Deep coral */
+    --light: #FFF3E0; /* Peach */
+    --accent: #FFD180; /* Soft peach accent */
+    --success: #66BB6A;
+    --danger: #EF5350;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    flex: 1 0 auto;
+}
+
+header {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 3rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    animation: gradientPulse 8s ease infinite;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23FFF3E0' fill-opacity='1' d='M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,85.3C672,75,768,85,864,106.7C960,128,1056,160,1152,176C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+    background-size: cover;
+    z-index: 1;
+}
+
+@keyframes gradientPulse {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.logo {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    animation: bounceIn 1.5s ease-out;
+}
+
+.logo i {
+    font-size: 2.5rem;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.tagline {
+    font-weight: 300;
+    font-size: 1.1rem;
+    opacity: 0.9;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    display: flex;
+    margin: 1.5rem auto;
+    max-width: 800px;
+    border: 2px solid var(--dark);
+    border-radius: 25px;
+    overflow: hidden;
+    background: var(--light);
+    box-shadow: 0 4px 12px rgba(198, 61, 42, 0.1);
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.search-container:hover {
+    box-shadow: 0 6px 16px rgba(198, 61, 42, 0.2), 0 0 10px var(--primary);
+}
+
+#searchInput {
+    flex: 1;
+    padding: 0.9rem 1.2rem;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    color: var(--dark);
+    background: transparent;
+}
+
+#searchInput::placeholder {
+    color: #757575;
+    opacity: 1;
+}
+
+#searchButton {
+    background: var(--dark);
+    color: white;
+    border: none;
+    padding: 0 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+#searchButton:hover {
+    background: #A52719;
+    box-shadow: 0 0 15px var(--primary);
+}
+
+#cancelSearch {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 0 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+    display: none;
+}
+
+#cancelSearch:hover {
+    background: #c62828;
+}
+
+.movies-container {
+    display: grid !important; /* Enforce grid layout */
+    grid-template-columns: 1fr !important; /* Single column */
+    gap: 2rem !important; /* Enforce 2rem gap */
+    margin-top: 2rem;
+    grid-auto-rows: min-content; /* Adjust row height based on content */
+    width: 100%; /* Ensure full width */
+}
+
+.movie-result {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    contain: content;
+    animation: fadeInUp 1s ease-out;
+    margin-bottom: 2rem; /* Fallback margin */
+}
+
+.movie-result:last-child {
+    margin-bottom: 0; /* Remove margin from last card to avoid extra space */
+}
+
+.movie-result:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1), 0 0 10px var(--primary);
+}
+
+.movie-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex: 0 1 auto;
+}
+
+.movie-poster {
+    width: 120px;
+    height: 180px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+}
+
+.movie-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+    word-wrap: break-word;
+}
+
+.movie-plot {
+    color: #475569;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    flex-grow: 1;
+    overflow-wrap: break-word; /* Ensure text wraps properly */
+}
+
+.trailer-button, .toggle-details {
+    display: inline-flex;
+    align-items: center;
+    background: var(--primary);
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-right: 0.75rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.trailer-button:hover, .toggle-details:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.trailer-button:disabled {
+    background: #b0bec5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.movie-details {
+    display: none;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: var(--light);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    flex: 0 1 auto;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.details-grid h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.details-grid p, .details-grid span {
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+.movie-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.movie-meta span {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.movie-meta i {
+    margin-right: 6px;
+    color: var(--primary);
+}
+
+.cast-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cast-member {
+    text-align: center;
+}
+
+.cast-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+    border: 2px solid var(--light);
+}
+
+.cast-member p {
+    font-size: 0.85rem;
+    color: #475569;
+}
+
+.production-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.production-member {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 200px;
+}
+
+.production-logo {
+    width: 100px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.production-member p {
+    font-size: 0.85rem;
+    color: #475569;
+}
+
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #757575;
+    display: none;
+    animation: fadeInUp 1s ease-out;
+}
+
+.no-results i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    display: none;
+    animation: fadeInUp 1s ease-out;
+}
+
+.spinner {
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 5px solid var(--primary);
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+footer {
+    background: var(--accent);
+    padding: 1rem;
+    text-align: center;
+    color: var(--dark);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(198, 61, 42, 0.2);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    .movies-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .movie-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .movie-poster {
+        margin: 0 auto 1rem;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .movie-meta {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        padding: 2rem 0;
+    }
+
+    .logo {
+        font-size: 2.2rem;
+    }
+
+    .tagline {
+        font-size: 1rem;
+    }
+
+    .search-container {
+        max-width: 100%;
+    }
+
+    footer {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <span>THIRAIMINI</span>
+            </div>
+            <p class="tagline">Discover your next favorite movie</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for any movie...">
+            <button id="searchButton"><i class="fas fa-search"></i> Search</button>
+            <button id="cancelSearch"><i class="fas fa-times"></i> Cancel</button>
+        </div>
+        
+        <div class="no-results" id="noResults">
+            <i class="fas fa-film"></i>
+            <h3>No results found</h3>
+            <p>Try another movie title or check your spelling</p>
+        </div>
+        
+        <div id="contentWrapper">
+            <h2 id="trendingTitle">Top Movies of the Week</h2>
+            <div id="trendingMoviesContainer" class="movies-container">
+                <!-- Trending movies will be inserted here -->
+            </div>
+            
+            <div id="searchMoviesContainer" class="movies-container" style="display: none;">
+                <!-- Search results will be inserted here -->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Disclaimer: This website only indexes publicly available information. We do not host any content.</p>
+        <p>© 2025 CineHub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // TMDB API Key
+        const TMDB_API_KEY = "0d11cf08cbc75e8983544c3f51498f1a";
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const cancelButton = document.getElementById('cancelSearch');
+            const noResults = document.getElementById('noResults');
+            const trendingMoviesContainer = document.getElementById('trendingMoviesContainer');
+            const searchMoviesContainer = document.getElementById('searchMoviesContainer');
+            const trendingTitle = document.getElementById('trendingTitle');
+            const contentWrapper = document.getElementById('contentWrapper');
+
+            let isSearching = false;
+
+            // Ensure cancel button is hidden initially
+            cancelButton.style.display = 'none';
+            // Initially hide searchMoviesContainer
+            searchMoviesContainer.style.display = 'none';
+
+            searchButton.addEventListener('click', searchMovie);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') searchMovie();
+            });
+            cancelButton.addEventListener('click', cancelSearch);
+
+            // Fetch and display initial trending movies
+            fetchTrendingMovies();
+
+            // Auto-refresh trending movies every 6 hours (21600000 ms)
+            setInterval(fetchTrendingMovies, 21600000);
+
+            async function fetchTrendingMovies() {
+                if (isSearching) return;
+                console.log('Fetching trending movies...');
+                trendingMoviesContainer.innerHTML = '';
+
+                try {
+                    const response = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const data = await response.json();
+                    
+                    if (data.results && data.results.length > 0) {
+                        const movies = data.results.slice(0, 5);
+                        const moviesWithDetails = await Promise.all(movies.map(async (movie) => {
+                            return await fetchMovieDetails(movie);
+                        }));
+                        displayMovies(moviesWithDetails, trendingMoviesContainer);
+                        console.log('Trending movies loaded:', moviesWithDetails.length);
+                    } else {
+                        showNoResults(trendingMoviesContainer);
+                    }
+                } catch (error) {
+                    console.error("Trending movies fetch error:", error);
+                    showNoResults(trendingMoviesContainer);
+                }
+            }
+
+            async function fetchMovieDetails(movie) {
+                try {
+                    const detailsResponse = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos`);
+                    if (!detailsResponse.ok) throw new Error(`HTTP error for movie ${movie.id}! status: ${detailsResponse.status}`);
+                    const details = await detailsResponse.json();
+
+                    let trailerUrl = '';
+                    if (details.videos && details.videos.results) {
+                        const trailer = details.videos.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+                        if (trailer) trailerUrl = `https://www.youtube.com/watch?v=${trailer.key}`;
+                    }
+
+                    const genres = details.genres ? details.genres.map(g => g.name).join(', ') : 'N/A';
+                    const cast = details.credits && details.credits.cast ? details.credits.cast.slice(0, 10).map(c => ({
+                        name: c.name || 'Unknown',
+                        character: c.character || 'N/A',
+                        image: c.profile_path ? `https://image.tmdb.org/t/p/w185${c.profile_path}` : 'https://via.placeholder.com/80x80?text=No+Image'
+                    })) : [];
+                    const production = details.production_companies ? details.production_companies.map(p => ({
+                        name: p.name || 'Unknown',
+                        country: p.origin_country || 'N/A',
+                        logo: p.logo_path ? `https://image.tmdb.org/t/p/w154${p.logo_path}` : 'https://via.placeholder.com/100x50?text=No+Logo'
+                    })) : [];
+                    const formatMoney = (amount) => amount ? `$${amount.toLocaleString()}` : 'N/A';
+                    const releaseDate = movie.release_date ? new Date(movie.release_date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    }) : 'N/A';
+
+                    return {
+                        id: movie.id,
+                        title: movie.title || 'Unknown Title',
+                        year: releaseDate,
+                        runtime: details.runtime ? `${details.runtime} min` : 'N/A',
+                        rating: movie.vote_average ? `${movie.vote_average.toFixed(1)}/10 (based on ${movie.vote_count || 0} votes)` : 'N/A',
+                        language: movie.original_language ? movie.original_language.toUpperCase() : 'N/A',
+                        genres: genres,
+                        cast: cast,
+                        production: production,
+                        budget: formatMoney(details.budget),
+                        revenue: formatMoney(details.revenue),
+                        plot: movie.overview || 'No description available',
+                        poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/120x180?text=No+Poster',
+                        trailer: trailerUrl || '#'
+                    };
+                } catch (error) {
+                    console.error(`Error fetching details for movie ${movie.id}:`, error);
+                    return null;
+                }
+            }
+
+            async function searchMovie() {
+                const query = searchInput.value.trim();
+                if (!query) {
+                    alert('Please enter a movie name');
+                    return;
+                }
+
+                isSearching = true;
+                console.log('Starting search for:', query);
+                noResults.style.display = 'none';
+                trendingMoviesContainer.innerHTML = ''; // Clear trending content
+                trendingTitle.style.display = 'none';
+                searchMoviesContainer.style.display = 'block';
+                contentWrapper.style.display = 'block'; // Ensure wrapper is visible
+                searchMoviesContainer.innerHTML = '<div class="loading"><div class="spinner"></div><p>Searching for movies...</p></div>';
+                searchButton.style.display = 'none';
+                cancelButton.style.display = 'inline-block';
+
+                try {
+                    const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const data = await response.json();
+
+                    if (data.results && data.results.length > 0) {
+                        const movies = data.results.slice(0, 5);
+                        const moviesWithDetails = await Promise.all(movies.map(async (movie) => {
+                            return await fetchMovieDetails(movie);
+                        }));
+                        
+                        const validMovies = moviesWithDetails.filter(movie => movie !== null);
+                        
+                        if (validMovies.length > 0) {
+                            displayMovies(validMovies, searchMoviesContainer);
+                            console.log('Search results loaded:', validMovies.length);
+                        } else {
+                            showNoResults(searchMoviesContainer);
+                        }
+                    } else {
+                        showNoResults(searchMoviesContainer);
+                    }
+                } catch (error) {
+                    console.error("Search error:", error);
+                    showNoResults(searchMoviesContainer);
+                }
+            }
+
+            function showNoResults(container) {
+                container.innerHTML = '';
+                noResults.style.display = 'block';
+            }
+
+            function cancelSearch() {
+                isSearching = false;
+                console.log('Cancelling search');
+                searchInput.value = '';
+                trendingMoviesContainer.innerHTML = ''; // Clear before reloading
+                trendingTitle.style.display = 'block';
+                searchMoviesContainer.style.display = 'none';
+                searchMoviesContainer.innerHTML = '';
+                noResults.style.display = 'none';
+                searchButton.style.display = 'inline-block';
+                cancelButton.style.display = 'none';
+                fetchTrendingMovies(); // Reload trending movies
+            }
+
+            function displayMovies(movies, container) {
+                container.innerHTML = '';
+                container.className = 'movies-container'; // Reapply class to ensure styles
+                container.style.display = 'grid'; // Ensure grid layout
+                container.style.gridTemplateColumns = '1fr'; // Single column
+                container.style.gap = '2rem'; // Apply gap
+                
+                if (movies.length === 0) {
+                    showNoResults(container);
+                    return;
+                }
+                
+                movies.forEach(movie => {
+                    if (!movie) return; // Skip null entries
+                    
+                    const movieElement = document.createElement('div');
+                    movieElement.className = 'movie-result';
+                    movieElement.style.animation = 'fadeInUp 1s ease-out';
+
+                    const castHtml = movie.cast.length > 0 ? movie.cast.map(c => `
+                        <div class="cast-member">
+                            <img src="${c.image}" alt="${c.name}" class="cast-image" onerror="this.src='https://via.placeholder.com/80x80?text=No+Image'">
+                            <p><strong>${c.name}</strong><br>${c.character}</p>
+                        </div>
+                    `).join('') : '<p>No cast information available</p>';
+
+                    const productionHtml = movie.production.length > 0 ? movie.production.map(p => `
+                        <div class="production-member">
+                            <img src="${p.logo}" alt="${p.name}" class="production-logo" onerror="this.src='https://via.placeholder.com/100x50?text=No+Logo'">
+                            <p>${p.name} (${p.country})</p>
+                        </div>
+                    `).join('') : '<p>No production information available</p>';
+
+                    const trailerButton = movie.trailer === '#' ? 
+                        `<button class="trailer-button" disabled><i class="fas fa-play"></i> No Trailer</button>` : 
+                        `<a href="${movie.trailer}" target="_blank" class="trailer-button"><i class="fas fa-play"></i> Watch Trailer</a>`;
+
+                    movieElement.innerHTML = `
+                        <div class="movie-header">
+                            <img src="${movie.poster}" alt="${movie.title} Poster" class="movie-poster" onerror="this.src='https://via.placeholder.com/120x180?text=No+Poster'">
+                            <div>
+                                <h1 class="movie-title">${movie.title}</h1>
+                                <p class="movie-plot">${movie.plot}</p>
+                                ${trailerButton}
+                                <button class="toggle-details" onclick="toggleDetails(${movie.id}, this)">More</button>
+                                <div class="movie-details" id="details-${movie.id}">
+                                    <div class="details-grid">
+                                        <div>
+                                            <h3>General Information</h3>
+                                            <div class="movie-meta">
+                                                <span><i class="fas fa-calendar-alt"></i> Release: ${movie.year}</span>
+                                                <span><i class="fas fa-clock"></i> Runtime: ${movie.runtime}</span>
+                                                <span><i class="fas fa-star"></i> Rating: ${movie.rating}</span>
+                                                <span><i class="fas fa-language"></i> Language: ${movie.language}</span>
+                                            </div>
+                                            <p><strong>Genres:</strong> ${movie.genres}</p>
+                                        </div>
+                                        <div>
+                                            <h3>Financials</h3>
+                                            <p><strong>Budget:</strong> ${movie.budget}</p>
+                                            <p><strong>Revenue:</strong> ${movie.revenue}</p>
+                                        </div>
+                                    </div>
+                                    <h3>Cast</h3>
+                                    <div class="cast-container">${castHtml}</div>
+                                    <h3>Production Companies</h3>
+                                    <div class="production-container">${productionHtml}</div>
+                                    <button class="toggle-details" onclick="toggleDetails(${movie.id}, this)">Less</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(movieElement);
+                });
+            }
+
+            window.toggleDetails = function(movieId, button) {
+                const details = document.getElementById(`details-${movieId}`);
+                if (details.style.display === 'block') {
+                    details.style.display = 'none';
+                    button.textContent = 'More';
+                } else {
+                    details.style.display = 'block';
+                    button.textContent = 'Less';
+                }
+            };
+        });
+    </script>
+</body>
+</html>
